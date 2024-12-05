@@ -6,7 +6,7 @@ using User.Models;
 
 namespace Back.Library.LibraryController
 {
-    [Route("api/[controller]")]
+    [Route("api/biblioteca")]
     [ApiController]
 
 
