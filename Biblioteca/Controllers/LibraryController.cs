@@ -299,6 +299,19 @@ namespace Back.Library.LibraryController
             return Created();
         }
 
+        [HttpPut("devolver/{rentId}")]
+        public ActionResult<List<BookModel>>
+    DevolverLivro(int rentId)
+        {
+            var rent = rentModels.Find(f =>  f.Id == rentId);
+
+            if (rent == null) return NotFound();
+
+            rent.devolvido_em = DateTime.Now;
+
+            return Ok();
+        }
+
         [HttpGet("rent")]
         public ActionResult<List<BookModel>>
              ListarAlugueis()

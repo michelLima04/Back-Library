@@ -6,4 +6,5 @@
         public string nomeUser { get; set; } = string.Empty;
         public int anoNasc { get; set; }
     }
+    
 }
