@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Book.Models;
-using User.Models;
+using Rent.Models;
+using Biblioteca.Requests;
 
 
 namespace Back.Library.LibraryController
@@ -245,8 +246,8 @@ namespace Back.Library.LibraryController
                     }
                 };
 
-        private static List<UserModel> userModels =
-               new List<UserModel>();
+        private static List<RentModel> rentModels =
+               new List<RentModel>();
 
 
         [HttpGet]
@@ -271,22 +272,38 @@ namespace Back.Library.LibraryController
 
         [HttpPost]
         public ActionResult<List<BookModel>>
-            EmprestarLivro(UserModel novo)
+            EmprestarLivro(RentRequest novo)
         {
             var pesquisa = bookModels.Find(x => x.Id == novo.idBook);
+
             if (pesquisa == null)
                 return NotFound("Livro não encontrado!");
 
             if (pesquisa.Qtd == 0)
                 return NotFound("Livro sem estoque!");
-            else
-                pesquisa.Qtd--;
 
-            userModels.Add(novo);
+            var rent = new RentModel();
 
-            return Ok(pesquisa);
+            rent.Id = rentModels.Count > 0 ? rentModels[rentModels.Count - 1].Id + 1 : 1;
+            
+            rent.nomeUser = novo.nomeUser;
+            rent.anoNasc = novo.anoNasc;
+            rent.idBook = novo.idBook;
+            rent.emprestado_em = DateTime.Now;
+            rent.devolvido_em = null;
 
+            rentModels.Add(rent);
 
+            pesquisa.Qtd--;
+
+            return Created();
+        }
+
+        [HttpGet("rent")]
+        public ActionResult<List<BookModel>>
+             ListarAlugueis()
+        {
+            return Ok(rentModels);
         }
 
     }

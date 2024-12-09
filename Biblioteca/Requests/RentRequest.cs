@@ -1,6 +1,6 @@
-﻿namespace User.Models
+﻿namespace Biblioteca.Requests
 {
-    public class UserModel
+    public class RentRequest
     {
         public int idBook { get; set; }
         public string nomeUser { get; set; } = string.Empty;
